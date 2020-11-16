@@ -5,7 +5,9 @@ public class SportsClub{
     private String clubLocation;
     private String statistics;
     
-   
+    public SportsClub() {
+
+    }
     public String getClubName() {
         return clubName;
     }

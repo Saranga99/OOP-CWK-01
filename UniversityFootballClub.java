@@ -1,6 +1,10 @@
 public class UniversityFootballClub{
     private String universityName;
 
+    public UniversityFootballClub() {
+        
+    }
+
     public String getUniversityName(){
         return universityName;
     }

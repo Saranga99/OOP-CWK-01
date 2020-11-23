@@ -1,29 +1,51 @@
-public class SportsClub{
+import java.io.Serializable;
+
+public abstract class SportsClub implements Serializable {
+
     //abstract class
-    
     private String clubName;
     private String clubLocation;
-    private String statistics;
-    
-    public SportsClub() {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SportsClub)) return false;
+        SportsClub that = (SportsClub) o;
+        return getClubName().equals(that.getClubName());
+    }
+
+    public SportsClub(String clubName, String clubLocation) {
+        this.clubName = clubName;
+        this.clubLocation = clubLocation;
 
     }
+
+
     public String getClubName() {
         return clubName;
     }
+
     public String getClubLocation() {
         return clubLocation;
     }
-    public String getStatistics() {
-        return statistics;
-    }
+
+
     public void setClubName(String clubName) {
         this.clubName = clubName;
     }
+
     public void setClubLocation(String clubLocation) {
-        this.clubLocation=clubLocation;
+        this.clubLocation = clubLocation;
     }
-    public void setStatistics(String statistics) {
-        this.statistics = statistics;
+
+
+    @Override
+    public String toString() {
+        return "clubName='" + clubName + '\'' +
+                ", clubLocation='" + clubLocation + '\'';
     }
+
+    public abstract String getUniversityName();
+
+    public abstract String getSchoolName();
 }

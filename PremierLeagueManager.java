@@ -7,8 +7,8 @@ import java.util.Scanner;
 
 public class PremierLeagueManager implements LeagueManager {
     private final int numberOfFootballClubs;
-    private List<FootballClub> clubList = new ArrayList<>();
-    private List<FootballMatch> matchList = new ArrayList<>();
+    private List<FootballClub> footballClubsList = new ArrayList<>();
+    private List<FootballMatch> footballMatchList = new ArrayList<>();
     private final Scanner gettingInputs = new Scanner(System.in);
     private File txtFootballClubs = new File("FootballClubs.txt");
     private File txtFootballMatches = new File("FootballMatches.txt");
@@ -40,54 +40,54 @@ public class PremierLeagueManager implements LeagueManager {
             }
             switch (action) {
                 case 1:
-                    if (clubList.size() == numberOfFootballClubs) {
+                    if (footballClubsList.size() == numberOfFootballClubs) {
                         System.out.println("\nERROR>>>>> List full\n");
                     } else {
                         addingFootballClubToLeague();
-                        saveClubsInFile((ArrayList) clubList);
+                        saveClubsInFile((ArrayList) footballClubsList);
                     }
                     break;
                 case 2:
-                    if (clubList.size() == 0) {
+                    if (footballClubsList.size() == 0) {
                         System.out.println("\nInvalid Operation>>>>> No Football Clubs in League\n ");
                     } else {
                         removeFootballClubFromLeague();
-                        saveClubsInFile((ArrayList) clubList);
+                        saveClubsInFile((ArrayList) footballClubsList);
                     }
                     break;
                 case 3:
-                    if (clubList.size() == 0) {
+                    if (footballClubsList.size() == 0) {
                         System.out.println("\nInvalid Operation>>>>> No Football Clubs in League\n ");
                     } else {
                         displayFootballClubStatistics();
                     }
                     break;
                 case 4:
-                    if (clubList.size() == 0) {
+                    if (footballClubsList.size() == 0) {
                         System.out.println("\nInvalid Operation>>>>> No Football Clubs in League\n ");
                     } else {
                         displayPremierLeagueTable();
                     }
                     break;
                 case 5:
-                    if (clubList.size() > 1) {
+                    if (footballClubsList.size() > 1) {
                         addPlayedMatch();
-                        saveClubsInFile((ArrayList) clubList);
+                        saveClubsInFile((ArrayList) footballClubsList);
                     } else {
                         System.out.println("\nInvalid Operation>>>>> More than One Club should in League\n ");
                     }
                     break;
                 case 6:
-                    if (matchList.size() == 0) {
+                    if (footballMatchList.size() == 0) {
                         System.out.println("\nInvalid Operation>>>>> No Matches played in League\n ");
                     } else {
                         matchesSummary();
-                        saveMatchesInFile((ArrayList) matchList);
+                        saveMatchesInFile((ArrayList) footballMatchList);
                     }
                     break;
                 case 7:
-                    saveClubsInFile((ArrayList) clubList);
-                    saveMatchesInFile((ArrayList) matchList);
+                    saveClubsInFile((ArrayList) footballClubsList);
+                    saveMatchesInFile((ArrayList) footballMatchList);
                     mainMenu = false;
                     break;
                 default:
@@ -105,7 +105,7 @@ public class PremierLeagueManager implements LeagueManager {
             System.out.println("Enter Football Club Name     : ");
             String footballClubName = gettingInputs.nextLine();
             footballClubName = footballClubName.toUpperCase();
-            for (FootballClub footballClub : clubList) {
+            for (FootballClub footballClub : footballClubsList) {
                 if (footballClub.getClubName().equals(footballClubName)) {
                     System.out.println("\nINFORMATION>>>>>> " + footballClub.getClubName() + " Already in League\n");
                     subMenu = false;
@@ -127,7 +127,7 @@ public class PremierLeagueManager implements LeagueManager {
                         System.out.println("Enter Football Club Location : ");
                         String footballClubLocation = gettingInputs.nextLine();
                         FootballClub footballClub = new FootballClub(footballClubName, footballClubLocation);
-                        clubList.add(footballClub);
+                        footballClubsList.add(footballClub);
                         System.out.println("\nINFORMATION>>>>>> " + footballClub.getClubName() + " Club is Added to the League\n");
                         subMenu = false;
                         break;
@@ -137,7 +137,7 @@ public class PremierLeagueManager implements LeagueManager {
                         System.out.println("Enter University Name                       : ");
                         String universityName = gettingInputs.nextLine();
                         FootballClub universityFootballClub = new UniversityFootballClub(footballClubName, universityFootballCluLocation, universityName);
-                        clubList.add(universityFootballClub);
+                        footballClubsList.add(universityFootballClub);
                         System.out.println("\nINFORMATION>>>>>> " + universityFootballClub.getClubName() + " Club is Added to the League\n");
                         subMenu = false;
                         break;
@@ -147,7 +147,7 @@ public class PremierLeagueManager implements LeagueManager {
                         System.out.println("Enter School Name                       : ");
                         String schoolName = gettingInputs.nextLine();
                         FootballClub schoolFootballClub = new SchoolFootballClub(footballClubName, schoolFootballCluLocation, schoolName);
-                        clubList.add(schoolFootballClub);
+                        footballClubsList.add(schoolFootballClub);
                         System.out.println("\nINFORMATION>>>>>> " + schoolFootballClub.getClubName() + " Club is Added to the League\n");
                         subMenu = false;
                         break;
@@ -168,9 +168,9 @@ public class PremierLeagueManager implements LeagueManager {
             System.out.println("Enter Club Name here : ");
             String footballClubName = gettingInputs.nextLine();
             footballClubName = footballClubName.toUpperCase();
-            for (FootballClub footballClub : clubList) {
+            for (FootballClub footballClub : footballClubsList) {
                 if (footballClub.getClubName().equals(footballClubName)) {
-                    clubList.remove(footballClub);
+                    footballClubsList.remove(footballClub);
                     System.out.println("\nINFORMATION>>>>>> " + footballClub.getClubName() + " Club is Removed from League\n");
                     footballClubNotHere = false;
                     break;
@@ -192,7 +192,7 @@ public class PremierLeagueManager implements LeagueManager {
             System.out.println("Enter Club Name here : ");
             String footballClubName = gettingInputs.nextLine();
             footballClubName = footballClubName.toUpperCase();
-            for (FootballClub footballClub : clubList) {
+            for (FootballClub footballClub : footballClubsList) {
                 if (footballClub.getClubName().equals(footballClubName)) {
                     System.out.println("\nClub Name        : " + footballClub.getClubName());
                     System.out.println("Club Location    : " + footballClub.getClubLocation());
@@ -243,7 +243,7 @@ public class PremierLeagueManager implements LeagueManager {
             System.out.println("Enter Home Team : ");
             String input = gettingInputs.nextLine();
             input = input.toUpperCase();
-            for (FootballClub footballClub : clubList) {
+            for (FootballClub footballClub : footballClubsList) {
                 if (footballClub.getClubName().equals(input)) {
                     home = footballClub;
                     teamInLeague = false;
@@ -260,7 +260,7 @@ public class PremierLeagueManager implements LeagueManager {
             System.out.println("Enter Away Team : ");
             String input = gettingInputs.nextLine();
             input = input.toUpperCase();
-            for (FootballClub footballClub : clubList) {
+            for (FootballClub footballClub : footballClubsList) {
                 if (footballClub.getClubName().equals(input)) {
                     if (!(footballClub.getClubName().equals(home.getClubName()))) {
                         away = footballClub;
@@ -311,7 +311,7 @@ public class PremierLeagueManager implements LeagueManager {
         footballMatch.setTeamB(away);
         footballMatch.setTeamAScore(awayGoals);
         footballMatch.setTeamBScore(homeGoals);
-        matchList.add(footballMatch);
+        footballMatchList.add(footballMatch);
         home.setScoredGoalsCount(home.getScoredGoalsCount() + homeGoals);
         away.setScoredGoalsCount(away.getScoredGoalsCount() + awayGoals);
         home.setReceivedGoalsCount(home.getReceivedGoalsCount() + awayGoals);
@@ -341,7 +341,7 @@ public class PremierLeagueManager implements LeagueManager {
     public void matchesSummary() {
         System.out.println("\n__Premier League Match Summary__\n");
         int matchCount = 1;
-        for (FootballMatch footballMatch : matchList) {
+        for (FootballMatch footballMatch : footballMatchList) {
             System.out.println("\nMatch No     : " + matchCount);
             matchCount++;
             System.out.println(footballMatch);
@@ -370,8 +370,8 @@ public class PremierLeagueManager implements LeagueManager {
         try {
             FileInputStream fileInputStream = new FileInputStream(txtFootballClubs);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            ArrayList footballClubs = (ArrayList) objectInputStream.readObject();
-            clubList = footballClubs;
+            footballClubsList = (ArrayList) objectInputStream.readObject();
+
         } catch (Exception e) {
         }
 
@@ -383,8 +383,8 @@ public class PremierLeagueManager implements LeagueManager {
         try {
             FileInputStream fileInputStream1 = new FileInputStream(txtFootballMatches);
             ObjectInputStream objectInputStream1 = new ObjectInputStream(fileInputStream1);
-            ArrayList footballMatches = (ArrayList) objectInputStream1.readObject();
-            matchList = footballMatches;
+            footballMatchList = (ArrayList) objectInputStream1.readObject();
+
         } catch (Exception e) {
         }
     }

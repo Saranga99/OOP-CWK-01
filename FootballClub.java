@@ -1,4 +1,4 @@
-public class FootballClub extends SportsClub {
+public class FootballClub extends SportsClub implements Comparable<FootballClub> {
 
     private int winCount;
     private int drawCount;
@@ -8,6 +8,7 @@ public class FootballClub extends SportsClub {
     private int goalDifferenceCount;
     private int points;
     private int matchesPlayed;
+    private double winingPercentage;
 
     public FootballClub(String clubName, String clubLocation) {
         super(clubName, clubLocation);
@@ -34,7 +35,8 @@ public class FootballClub extends SportsClub {
     }
 
     public int getGoalDifferenceCount() {
-        return getScoredGoalsCount()-getReceivedGoalsCount();
+        goalDifferenceCount = getScoredGoalsCount() - getReceivedGoalsCount();
+        return goalDifferenceCount;
     }
 
     public int getPoints() {
@@ -43,6 +45,10 @@ public class FootballClub extends SportsClub {
 
     public int getMatchesPlayed() {
         return matchesPlayed;
+    }
+
+    public double getWiningPercentage() {
+        return winingPercentage;
     }
 
     public void setWinCount(int winCount) {
@@ -65,12 +71,23 @@ public class FootballClub extends SportsClub {
         this.receivedGoalsCount = receivedGoalsCount;
     }
 
+    public void setGoalDifferenceCount(int goalDifferenceCount) {
+        this.goalDifferenceCount = goalDifferenceCount;
+    }
+
     public void setPoints(int points) {
         this.points = points;
     }
 
     public void setMatchesPlayed(int matchesPlayed) {
         this.matchesPlayed = matchesPlayed;
+    }
+
+    public void setWiningPercentage() {
+        this.winingPercentage = (getWinCount() / getMatchesPlayed()) * 100;
+        if (winingPercentage > -1 && winingPercentage < 101) {
+            this.winingPercentage = winingPercentage;
+        }
     }
 
     @Override
@@ -94,5 +111,24 @@ public class FootballClub extends SportsClub {
     @Override
     public String getSchoolName() {
         return null;
+    }
+
+    @Override
+    public int compareTo(FootballClub fC) {
+
+        if (this.getPoints() < fC.getPoints()) {
+            return 1;
+        }
+        if (this.getPoints() > fC.getPoints()) {
+            return -1;
+        } else {
+            if (this.getGoalDifferenceCount() > fC.getGoalDifferenceCount()) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+
+
     }
 }

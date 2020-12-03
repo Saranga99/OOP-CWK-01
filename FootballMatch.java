@@ -53,10 +53,10 @@ public class FootballMatch implements Serializable {
 
     @Override
     public String toString() {
-        return "teamA        : " + teamA +
-                "\nteamB        : " + teamB +
-                "\nteamAScore   : " + teamAScore +
-                "\nteamBScore   : " + teamBScore +
-                "\ndate         : " + date;
+        return "team A        : " + teamA +
+                "\nteam B        : " + teamB +
+                "\nteam-A Score  : " + teamAScore +
+                "\nteam-B Score  : " + teamBScore +
+                "\ndate          : " + date;
     }
 }

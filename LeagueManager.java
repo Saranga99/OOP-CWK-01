@@ -2,23 +2,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public interface LeagueManager {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        LeagueManager premierLeagueManager = new PremierLeagueManager(4);
-    }
-
-    void showMainMenu() throws IOException;
+    //void showMainMenu() throws IOException;
 
     void addingFootballClubToLeague() throws IOException;
 
-    void removeFootballClubFromLeague();
+    void removeFootballClubFromLeague() throws IOException;
 
     void displayFootballClubStatistics();
 
     void displayPremierLeagueTable();
 
-    void addPlayedMatch();
+    void addPlayedMatch() throws IOException;
 
-    void matchesSummary();
+    void matchesSummary() throws IOException;
+
+    void resetClubStatistics();
 
     void saveClubsInFile(ArrayList footballClubs) throws IOException;
 

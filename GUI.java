@@ -195,6 +195,7 @@ public class GUI {
         matchesTableBG.setFitHeight(800);
 
         Button btnRandomMatch = guiComponents.creatingButton("Random Match", 50, 500, 50, 250);
+        Button btnSortByDate = guiComponents.creatingButton("Sort By Date", 400, 500, 50, 250);
         Button btnSearchByDate = guiComponents.creatingButton("Search By Date", 50, 580, 50, 250);
         txtFieldSearch = guiComponents.creatingTextField("DD/MM/YYYY", 300, 580, 50, 250);
         lblTeams = GUIComponents.creatingLabel("Home Team VS Away Team", 600, 580, 50, 380);
@@ -239,6 +240,7 @@ public class GUI {
         matchesTablePane.getChildren().add(lblHomeGoals);
         matchesTablePane.getChildren().add(lblAwayGoals);
         matchesTablePane.getChildren().add(btnSearchByDate);
+        matchesTablePane.getChildren().add(btnSortByDate);
         matchesTablePane.getChildren().add(btnBack);
 
         refreshMatchTable();

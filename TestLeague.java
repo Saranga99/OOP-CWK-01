@@ -10,8 +10,6 @@ public class TestLeague extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        premierLeagueManager.loadingClubsData();
-        premierLeagueManager.loadingMatchesData();
         System.out.println("\n                     ||||||______FOOTBALL LEAGUE MANAGEMENT SYSTEM______||||||\n");
         TestLeague testLeague = new TestLeague();
         testLeague.mainMenu();

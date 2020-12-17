@@ -12,6 +12,8 @@ public class PremierLeagueManager implements LeagueManager {
 
     public PremierLeagueManager(int numberOfFootballClubs) {
         this.numberOfFootballClubs = numberOfFootballClubs;
+        loadingClubsData();
+        loadingMatchesData();
     }
 
     public PremierLeagueManager() {
@@ -326,6 +328,8 @@ public class PremierLeagueManager implements LeagueManager {
 
     @Override
     public void matchesSummary() {
+        loadingMatchesData();
+        loadingClubsData();
         if (footballMatchList.size() == 0) {
             System.out.println("\nInvalid Operation>>>>> No Matches played in League\n ");
         } else {

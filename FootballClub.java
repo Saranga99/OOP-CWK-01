@@ -10,6 +10,7 @@ public class FootballClub extends SportsClub implements Comparable<FootballClub>
     private int matchesPlayed;
     private double winingPercentage;
 
+
     public FootballClub(String clubName, String clubLocation) {
         super(clubName, clubLocation);
     }
@@ -83,24 +84,20 @@ public class FootballClub extends SportsClub implements Comparable<FootballClub>
         this.matchesPlayed = matchesPlayed;
     }
 
-    public void setWiningPercentage() {
-        this.winingPercentage = (getWinCount() / getMatchesPlayed()) * 100;
-        if (winingPercentage > -1 && winingPercentage < 101) {
-            this.winingPercentage = winingPercentage;
+    public void setWiningPercentage(double winingPercentage) {
+        try {
+            if (winingPercentage > -1 && winingPercentage < 101) {
+                this.winingPercentage = winingPercentage;
+            }
+        } catch (Exception e) {
         }
     }
 
     @Override
     public String toString() {
         String details = super.toString();
-        return details +
-                "winCount=" + winCount +
-                ", drawCount=" + drawCount +
-                ", defeatCount=" + defeatCount +
-                ", scoredGoalsCount=" + scoredGoalsCount +
-                ", receivedGoalsCount=" + receivedGoalsCount +
-                ", points=" + points +
-                ", matchesPlayed=" + matchesPlayed;
+        return details;
+
     }
 
     @Override

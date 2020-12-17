@@ -1,19 +1,20 @@
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PremierLeagueManager implements LeagueManager {
-    private final int numberOfFootballClubs;
+    private int numberOfFootballClubs;
     private List<FootballClub> footballClubsList = new ArrayList<>();
     private List<FootballMatch> footballMatchList = new ArrayList<>();
     private final Scanner gettingInputs = new Scanner(System.in);
-    private File txtFootballClubs = new File("FootballClubs.txt");
-    private File txtFootballMatches = new File("FootballMatches.txt");
+    private File fileFootballClubs = new File("src/Data/FootballClubs");
+    private File fileFootballMatches = new File("src/Data/FootballMatches");
+
 
     public PremierLeagueManager(int numberOfFootballClubs) {
-        loadingData();
-        loadingMatchesData();
         this.numberOfFootballClubs = numberOfFootballClubs;
+    }
+
+    public PremierLeagueManager() {
     }
 
     @Override
@@ -28,7 +29,7 @@ public class PremierLeagueManager implements LeagueManager {
                 footballClubName = footballClubName.toUpperCase();
                 for (FootballClub footballClub : footballClubsList) {
                     if (footballClub.getClubName().equals(footballClubName)) {
-                        System.out.println("\nINFORMATION>>>>>> " + footballClub.getClubName() + " Already in League\n");
+                        System.out.println("\nINFORMATION>>>>>> " + footballClub.getClubName() + " Club is Already in League\n");
                         subMenu = false;
                     }
                 }
@@ -41,7 +42,8 @@ public class PremierLeagueManager implements LeagueManager {
                     int action = 0;
                     try {
                         action = Integer.parseInt(input);
-                    } catch (Exception e) {
+                    } catch (NumberFormatException numberFormatException) {
+                        System.out.println("Warning : " + numberFormatException.getMessage());
                     }
                     switch (action) {
                         case 1:
@@ -144,7 +146,6 @@ public class PremierLeagueManager implements LeagueManager {
                         System.out.println("Goal Difference  : " + footballClub.getGoalDifferenceCount());
                         System.out.println("Matches Played   : " + footballClub.getMatchesPlayed());
                         System.out.println("win Percentage   : " + footballClub.getWiningPercentage() + "%");
-
                         footballClubNotHere = false;
                         break;
                     }
@@ -164,9 +165,11 @@ public class PremierLeagueManager implements LeagueManager {
             Collections.sort(footballClubsList);
             System.out.printf("%-50s%10s%10s%10s%10s%20s%10s%10s%10s%10s\n", "Club Name", "Played", "Won", "Lost", "Drawn", "Wining Percentage", "GF", "GA", "GD", "Points");
             for (FootballClub footballClub : footballClubsList) {
-                System.out.printf("%-50s%5s%10s%10s%10s%20s%10s%10s%10s%10s\n", footballClub.getClubName(), footballClub.getMatchesPlayed(), footballClub.getWinCount()
+                System.out.printf("%-50s%7s%12s%10s%10s%15s%15.5s%10s%10s%8s\n", footballClub.getClubName(), footballClub.getMatchesPlayed(), footballClub.getWinCount()
                         , footballClub.getDefeatCount(), footballClub.getDrawCount(), footballClub.getWiningPercentage(), footballClub.getScoredGoalsCount(),
                         footballClub.getReceivedGoalsCount(), footballClub.getGoalDifferenceCount(), footballClub.getPoints());
+
+
             }
             System.out.println("\nGF : Goals for");
             System.out.println("GA : Goals Against");
@@ -180,19 +183,38 @@ public class PremierLeagueManager implements LeagueManager {
     public void addPlayedMatch() throws IOException {
         if (footballClubsList.size() > 1) {
             System.out.println("\n__Add Played Match in Premier League__\n");
-            Date date = null;
             boolean validDate = true;
+            Date date = new Date();
+            String inputDate = null;
             while (validDate) {
-                System.out.println("Enter Date (format DD-MM-YYYY) : ");
-                String input = gettingInputs.nextLine();
-                try {
-                    date = new SimpleDateFormat("DD-MM-YYYY").parse(input);
-                    validDate = false;
-                } catch (Exception e) {
-                    System.out.println("\nERROR>>>>> Please Enter Valid Date with Valid Format\n");
+                System.out.println("Enter Date (format DD-MM-YYYY) / (format DD/MM/YYYY) : ");
+                inputDate = gettingInputs.nextLine();
+                if (inputDate.length() == 10) {
+                    try {
+                        date.setDay(inputDate);
+                        date.setMonth(inputDate);
+                        date.setYear(inputDate);
+                        validDate = false;
+                    } catch (InvalidDayException invalidDay) {
+                        System.out.println("\nERROR>>>>> Please Enter Valid Day with Valid Format\n");
 
+                    } catch (InvalidMonthException invalidMonth) {
+                        System.out.println("\nERROR>>>>> Please Enter Valid Month with Valid Format\n");
+                    } catch (NumberFormatException dateWithLettersError) {
+                        System.out.println("\nERROR>>>>> Please  Valid Date with Valid Format (you included some Letters)\n");
+
+                    }
+                } else {
+                    System.out.println("\nERROR>>>>> Please Enter Valid Date with Valid Format\n");
                 }
             }
+            int day = Integer.parseInt(inputDate.substring(0, 2));
+            int month = Integer.parseInt(inputDate.substring(3, 5));
+            int year = Integer.parseInt(inputDate.substring(6, 10));
+            Date matchDate = new Date(day, month, year);
+            System.out.println(matchDate);
+
+
             FootballClub home = null;
             boolean teamInLeague = true;
             while (teamInLeague) {
@@ -241,7 +263,7 @@ public class PremierLeagueManager implements LeagueManager {
                 try {
                     homeGoals = Integer.parseInt(input);
                     validGoalCount = false;
-                } catch (Exception e) {
+                } catch (NumberFormatException numberFormatException) {
                 }
                 if (homeGoals == -1) {
                     System.out.println("\nERROR>>>>> Please Enter Valid Goal Amount\n");
@@ -255,18 +277,18 @@ public class PremierLeagueManager implements LeagueManager {
                 try {
                     awayGoals = Integer.parseInt(input);
                     validGoalCount = false;
-                } catch (Exception e) {
+                } catch (NumberFormatException numberFormatException) {
                 }
                 if (awayGoals == -1) {
                     System.out.println("\nERROR>>>>> Please Enter Valid Goal Amount\n");
                 }
             }
             FootballMatch footballMatch = new FootballMatch();
-            footballMatch.setDate(date);
-            footballMatch.setTeamA(home);
-            footballMatch.setTeamB(away);
-            footballMatch.setTeamAScore(awayGoals);
-            footballMatch.setTeamBScore(homeGoals);
+            footballMatch.setDate(matchDate);
+            footballMatch.setHomeTeam(home);
+            footballMatch.setAwayTeam(away);
+            footballMatch.setHomeGoals(homeGoals);
+            footballMatch.setAwayGoals(awayGoals);
             footballMatchList.add(footballMatch);
             home.setScoredGoalsCount(home.getScoredGoalsCount() + homeGoals);
             away.setScoredGoalsCount(away.getScoredGoalsCount() + awayGoals);
@@ -274,25 +296,27 @@ public class PremierLeagueManager implements LeagueManager {
             away.setReceivedGoalsCount(away.getReceivedGoalsCount() + homeGoals);
             home.setMatchesPlayed(home.getMatchesPlayed() + 1);
             away.setMatchesPlayed(away.getMatchesPlayed() + 1);
-
             if (homeGoals > awayGoals) {
                 home.setPoints(home.getPoints() + 3);
                 home.setWinCount(home.getWinCount() + 1);
                 away.setDefeatCount(away.getDefeatCount() + 1);
             } else if (homeGoals < awayGoals) {
-                away.setPoints(home.getPoints() + 3);
-                away.setWinCount(home.getWinCount() + 1);
-                home.setDefeatCount(away.getDefeatCount() + 1);
+                away.setPoints(away.getPoints() + 3);
+                away.setWinCount(away.getWinCount() + 1);
+                home.setDefeatCount(home.getDefeatCount() + 1);
             } else {
                 away.setPoints(home.getPoints() + 1);
-                away.setPoints(home.getPoints() + 1);
-                home.setDrawCount(home.getDefeatCount() + 1);
-                away.setDrawCount(away.getDefeatCount() + 1);
+                home.setPoints(home.getPoints() + 1);
+                home.setDrawCount(home.getDrawCount() + 1);
+                away.setDrawCount(away.getDrawCount() + 1);
             }
-            home.setWiningPercentage();
-            away.setWiningPercentage();
+
+            home.setWiningPercentage((home.getWinCount() * 100) / home.getMatchesPlayed());
+            away.setWiningPercentage((away.getWinCount() * 100) / away.getMatchesPlayed());
             System.out.println("\nINFORMATION>>>>>> Match added to League\n");
+
             saveClubsInFile((ArrayList) footballClubsList);
+            saveMatchesInFile((ArrayList) footballMatchList);
         } else {
             System.out.println("\nInvalid Operation>>>>> More than One Club should in League\n ");
         }
@@ -301,7 +325,7 @@ public class PremierLeagueManager implements LeagueManager {
     }
 
     @Override
-    public void matchesSummary() throws IOException {
+    public void matchesSummary() {
         if (footballMatchList.size() == 0) {
             System.out.println("\nInvalid Operation>>>>> No Matches played in League\n ");
         } else {
@@ -314,24 +338,45 @@ public class PremierLeagueManager implements LeagueManager {
                 matchCount++;
                 System.out.println(footballMatch);
             }
-            saveMatchesInFile((ArrayList) footballMatchList);
+
         }
 
 
     }
 
     @Override
-    public void resetClubStatistics() {
+    public void resetClubStatistics() throws IOException {
         if (footballClubsList.size() == 0) {
             System.out.println("\nInvalid Operation>>>>> No Football Clubs in League\n ");
 
         } else {
-            for (FootballClub footballClub : footballClubsList) {
-                footballClub.setMatchesPlayed(0);
-                footballClub.setScoredGoalsCount(0);
-                footballClub.setReceivedGoalsCount(0);
-                footballClub.setGoalDifferenceCount(0);
-                footballClub.setPoints(0);
+            boolean resetData = true;
+            while (resetData) {
+                System.out.println("\nINFORMATION>>>>> This action will reset all club statistics, Please Confirm to Continue (Y,y-yes/N,n-no)");
+                String input = gettingInputs.nextLine();
+                input = input.toLowerCase();
+                if (input.equals("y")) {
+                    for (FootballClub footballClub : footballClubsList) {
+                        footballClub.setMatchesPlayed(0);
+                        footballClub.setWinCount(0);
+                        footballClub.setDefeatCount(0);
+                        footballClub.setDrawCount(0);
+                        footballClub.setScoredGoalsCount(0);
+                        footballClub.setReceivedGoalsCount(0);
+                        footballClub.setGoalDifferenceCount(0);
+                        footballClub.setPoints(0);
+                        footballClub.setWiningPercentage(0.0);
+                    }
+                    saveClubsInFile((ArrayList) footballClubsList);
+                    saveMatchesInFile((ArrayList) footballMatchList);
+                    System.out.println("\nINFORMATION>>>>>> All Statistics data Cleared\n");
+                    resetData = false;
+                } else if (input.equals("n")) {
+                    System.out.println("\nINFORMATION>>>>>> Exiting without reset statistics\n");
+                    resetData = false;
+                } else {
+                    System.out.println("\nERROR>>>>> Please Enter Valid Input");
+                }
             }
 
         }
@@ -339,43 +384,55 @@ public class PremierLeagueManager implements LeagueManager {
 
     @Override
     public void saveClubsInFile(ArrayList footballClubs) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(txtFootballClubs);
+
+        FileOutputStream fileOutputStream = new FileOutputStream(fileFootballClubs);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(footballClubs);
-        objectOutputStream.close();
+        try {
+            objectOutputStream.writeObject(footballClubs);
 
-
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println("Warning : " + fileNotFoundException.getMessage());
+        } finally {
+            objectOutputStream.close();
+        }
     }
 
     @Override
     public void saveMatchesInFile(ArrayList footballMatches) throws IOException {
-        FileOutputStream fileOutputStream1 = new FileOutputStream(txtFootballMatches);
+        FileOutputStream fileOutputStream1 = new FileOutputStream(fileFootballMatches);
         ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(fileOutputStream1);
-        objectOutputStream1.writeObject(footballMatches);
+        try {
+            objectOutputStream1.writeObject(footballMatches);
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println("Warning : " + fileNotFoundException.getMessage());
+        } finally {
+            objectOutputStream1.close();
+        }
     }
 
     @Override
-    public void loadingData() {
+    public void loadingClubsData() {
+
         try {
-            FileInputStream fileInputStream = new FileInputStream(txtFootballClubs);
+            FileInputStream fileInputStream = new FileInputStream(fileFootballClubs);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             footballClubsList = (ArrayList) objectInputStream.readObject();
-
+            objectInputStream.close();
         } catch (Exception e) {
-
+            System.out.println("Log : Creating File to Save Club Data");
         }
-
-
     }
 
     @Override
     public void loadingMatchesData() {
+
         try {
-            FileInputStream fileInputStream1 = new FileInputStream(txtFootballMatches);
+            FileInputStream fileInputStream1 = new FileInputStream(fileFootballMatches);
             ObjectInputStream objectInputStream1 = new ObjectInputStream(fileInputStream1);
             footballMatchList = (ArrayList) objectInputStream1.readObject();
-
+            objectInputStream1.close();
         } catch (Exception e) {
+            System.out.println("Log : Creating File to Save Matches Data");
         }
     }
 }

@@ -1,46 +1,47 @@
+
 import java.io.Serializable;
-import java.util.Date;
 
 public class FootballMatch implements Serializable {
-    private FootballClub teamA;
-    private FootballClub teamB;
-    private int teamAScore;
-    private int teamBScore;
+    private FootballClub homeTeam;
+    private FootballClub awayTeam;
+    private int homeGoals;
+    private int awayGoals;
     private Date date;
+
 
     public FootballMatch() {
     }
 
-    public FootballClub getTeamA() {
-        return teamA;
+    public FootballClub getHomeTeam() {
+        return homeTeam;
     }
 
-    public void setTeamA(FootballClub teamA) {
-        this.teamA = teamA;
+    public void setHomeTeam(FootballClub homeTeam) {
+        this.homeTeam = homeTeam;
     }
 
-    public FootballClub getTeamB() {
-        return teamB;
+    public FootballClub getAwayTeam() {
+        return awayTeam;
     }
 
-    public void setTeamB(FootballClub teamB) {
-        this.teamB = teamB;
+    public void setAwayTeam(FootballClub awayTeam) {
+        this.awayTeam = awayTeam;
     }
 
-    public int getTeamAScore() {
-        return teamAScore;
+    public int getHomeGoals() {
+        return homeGoals;
     }
 
-    public void setTeamAScore(int teamAScore) {
-        this.teamAScore = teamAScore;
+    public void setHomeGoals(int homeGoals) {
+        this.homeGoals = homeGoals;
     }
 
-    public int getTeamBScore() {
-        return teamBScore;
+    public int getAwayGoals() {
+        return awayGoals;
     }
 
-    public void setTeamBScore(int teamBScore) {
-        this.teamBScore = teamBScore;
+    public void setAwayGoals(int awayGoals) {
+        this.awayGoals = awayGoals;
     }
 
     public Date getDate() {
@@ -53,10 +54,10 @@ public class FootballMatch implements Serializable {
 
     @Override
     public String toString() {
-        return "team A        : " + teamA +
-                "\nteam B        : " + teamB +
-                "\nteam-A Score  : " + teamAScore +
-                "\nteam-B Score  : " + teamBScore +
+        return "team A        : " + homeTeam.getClubName() +
+                "\nteam B        : " + awayTeam.getClubName() +
+                "\nteam-A Score  : " + homeGoals +
+                "\nteam-B Score  : " + awayGoals +
                 "\ndate          : " + date;
     }
 }

@@ -1,13 +1,23 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.Scanner;
 
-public class TestLeague {
+public class TestLeague extends Application {
+    final Scanner gettingInputs = new Scanner(System.in);
+    PremierLeagueManager premierLeagueManager = new PremierLeagueManager(4);
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        final Scanner gettingInputs = new Scanner(System.in);
-        PremierLeagueManager premierLeagueManager = new PremierLeagueManager(4);
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        premierLeagueManager.loadingClubsData();
+        premierLeagueManager.loadingMatchesData();
         System.out.println("\n                     ||||||______FOOTBALL LEAGUE MANAGEMENT SYSTEM______||||||\n");
+        TestLeague testLeague = new TestLeague();
+        testLeague.mainMenu();
+    }
 
+    public void mainMenu() throws IOException {
         boolean mainMenu = true;
         while (mainMenu) {
             System.out.println("\n__Premier League Main Menu__\n");
@@ -18,7 +28,8 @@ public class TestLeague {
             System.out.println("Add Played Match                   : Press 5");
             System.out.println("Display Matches Summary            : Press 6");
             System.out.println("Reset Club Statistics              : Press 7");
-            System.out.println("Exit from Application              : Press 8");
+            System.out.println("Show GUI with League Table         : Press 8");
+            System.out.println("Exit from Application              : Press 9");
             String input = gettingInputs.nextLine();
             int action = 0;
             try {
@@ -48,14 +59,15 @@ public class TestLeague {
                     premierLeagueManager.resetClubStatistics();
                     break;
                 case 8:
+                    GUI showPrimaryStage = new GUI();
+                    showPrimaryStage.guiWindow();
                     mainMenu = false;
                     break;
+                case 9:
+                    System.exit(0);
                 default:
                     System.out.println("\nERROR>>>>> Please Enter Valid Input\n");
             }
         }
-
-
     }
-
 }

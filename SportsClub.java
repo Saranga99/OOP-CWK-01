@@ -1,3 +1,5 @@
+
+
 import java.io.Serializable;
 
 public abstract class SportsClub implements Serializable {
@@ -41,8 +43,7 @@ public abstract class SportsClub implements Serializable {
 
     @Override
     public String toString() {
-        return "clubName='" + clubName + '\'' +
-                ", clubLocation='" + clubLocation + '\'';
+        return  clubName;
     }
 
     public abstract String getUniversityName();
